@@ -16,8 +16,7 @@ export default {
   name: 'home',
   data() {
     return {
-      users: [],
-      // loading: true
+      users: []
     };
   },
   created() {
@@ -26,7 +25,6 @@ export default {
       .where('ban_count', '>=', 10)
       .get()
       .then(querySnapshot => {
-        //this.loading = false;
         querySnapshot.forEach(doc => {
           const data = {
             id: doc.id,

@@ -5,6 +5,7 @@ import ViewUser from '@/components/ViewUser';
 import Login from '@/components/Login';
 import Register from '@/components/Register';
 import RestaurantList from '@/components/RestaurantList';
+import ViewRestUser from '@/components/ViewRestUser';
 import firebase from 'firebase';
 
 Vue.use(Router);
@@ -13,7 +14,7 @@ let router = new Router({
   mode:"history",
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'Home',
       component: Home,
       meta: {
@@ -45,9 +46,17 @@ let router = new Router({
       }
     },
     {
-      path: '/restaurantlist',
+      path: '/',
       name: 'restaurantList',
       component: RestaurantList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:restuser_id',
+      name: 'view-restuser',
+      component: ViewRestUser,
       meta: {
         requiresAuth: true
       }

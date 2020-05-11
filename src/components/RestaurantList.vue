@@ -2,9 +2,9 @@
   <div id="restaurantlist">
     <ul class="collection with-header">
       <li class="collection-header"><h4>식당 사용자 신청 목록</h4></li>
-      <li v-for="user in users" v-bind:key="user.id" class="collection-item">
+      <li v-for="user in restusers" v-bind:key="user.id" class="collection-item">
          {{user.name}} 
-         <!-- <router-link class="secondary-content" v-bind:to="{ name: 'view-user', params: { user_id: user.user_id }}">상세 내역</router-link> -->
+         <router-link class="secondary-content" v-bind:to="{ name: 'view-restuser', params: { restuser_id: user.id }}">상세 내역</router-link>
       </li>
     </ul>
   </div>
@@ -16,8 +16,7 @@ export default {
   name: 'restaurantlist',
   data() {
     return {
-      users: [],
-      //loading: true
+      restusers: []
     };
   },
   created() {
@@ -26,19 +25,15 @@ export default {
       .where('apply', '==', false)
       .get()
       .then(querySnapshot => {
-        //this.loading = false;
         querySnapshot.forEach(doc => {
           const data = {
             id: doc.id,
             name: doc.data().restaurantName,
             restaurantPhone: doc.data().restaurantPhone
           };
-          this.users.push(data);
-          
+          this.restusers.push(data);
         });
-      })
-      .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
+      });
   }
 };
+</script>

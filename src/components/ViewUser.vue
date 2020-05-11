@@ -8,13 +8,15 @@
         <button @click="deleteItem(content.id)" class="secondary-content">제거</button>
       </li>
     </ul>
-    <router-link to="/" class="btn grey">Back</router-link>
-    <button @click="deleteuser" class="btn red">사용자 영구 정지</button>
+    <router-link to="/home" class="btn grey">Back</router-link>
+    <button @click="deleteuser(userDelete)" class="btn red">사용자 영구 정지</button>
+    <button @click="testuser" class="btn blue">테스트 신고 추가</button>
   </div>
 </template>
 
 <script>
 import db from './firebaseInit';
+import firebase from 'firebase';
 export default {
   name: 'view-user',
   data() {
@@ -69,30 +71,45 @@ export default {
           });
         });
     },
-    deleteuser() {
+    deleteuser(callbackFunc) {
       if (confirm('해당 사용자를 제재하시겠습니까?')) {
         db
+        .collection('ban')
+        .where('user_id', '==', this.$route.params.user_id)
+          .get()
+          .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+              callbackFunc(this.$route.params.user_id);
+              doc.ref.delete();
+              //this.$router.push('/home');
+            });
+          });
+        
+        // db
+        // .collection('products')
+        // .where('uid', '==', this.$route.params.user_id)
+        //   .get()
+        //   .then(querySnapshot => {
+        //     querySnapshot.forEach(doc => {
+        //       doc.ref.delete();
+        //       this.$router.push('/home');
+        //     });
+        //   });
+      }
+      //예약목록에서도 모조리 제거
+    },
+    userDelete(user_id){
+      db
           .collection('users')
           .where('user_id', '==', this.$route.params.user_id)
           .get()
           .then(querySnapshot => {
             querySnapshot.forEach(doc => {
               doc.ref.delete();
-              //this.$router.push('/');
+              console.log('delete '+user_id);
+              this.$router.push('/home');
             });
           });
-        db
-        .collection('products')
-        .where('uid', '==', this.$route.params.user_id)
-          .get()
-          .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-              doc.ref.delete();
-              this.$router.push('/');
-            });
-          });
-      }
-      //예약목록에서도 모조리 제거
     },
     deleteItem(id){
         db
@@ -116,14 +133,29 @@ export default {
             console.log("Subtract a number User's ban_count");
             //page reload
             //window.location.reload();
-            this.$router.push('/');
+            //this.$router.go(this.$router.currentRoute);
+            this.$router.push('/home');
           })
           .catch((error) => {
             console.error("Error updating document: ", error);
           });
-    }
+    },
+    testuser(){
+      // Add a new document with a generated id.
+      firebase.firestore().collection("ban").add({
+        ban_date: firebase.firestore.FieldValue.serverTimestamp(),
+        description: "test",
+        user_id:this.$route.params.user_id
+      })
+      .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function(error) {
+        console.error("Error adding document: ", error);
+      });
     
 
+    }
   }
-};
+}
 </script>
