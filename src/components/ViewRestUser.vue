@@ -1,9 +1,21 @@
 <template>
-  <div id="view-restuser">
-    번호 : {{restaurantPhone}}<br>
-    식당이름 : {{restaurantName}}<br>
-    <router-link to="/home" class="btn grey">Back</router-link>
-    <button @click="acceptUser" class="btn blue">승인</button>
+<div class="row">
+    <div class="col s12 m7">
+      <div class="card">
+        <div class="card-image">
+          <img :src=profileImageUrl alt="식당 사진">
+          
+        </div>
+        <div class="card-content">
+          <div>식당 이름 : {{restaurantName}}</div>
+          <div>식당 번호 : {{restaurantPhone}}</div>
+        </div>
+        <div class="card-action">
+          <router-link to="/" class="btn grey">Back</router-link>
+          <button @click="acceptUser" class="btn blue">승인</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -41,13 +53,12 @@ export default {
     acceptUser(){
         if (confirm('해당 식당사용자를 승인하시겠습니까?')) {
           db
-            .collection('users')
-            .doc(this.$route.params.user_id).update({
-                
-                "apply":!(this.apply)
+            .collection('restaurantUsers')
+            .doc(this.$route.params.restuser_id).update({
+                "apply":true
             })
             .then(() => {
-                console.log("Subtract a number User's ban_count");
+                console.log("successfuly restaurant user approval");
                 this.$router.push('/');
             })
             .catch((error) => {
