@@ -22,14 +22,15 @@ export default {
   created() {
     db
       .collection('restaurantUsers')
-      .where('apply', '==', false)
+      .where('approved', '==', false)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           const data = {
             id: doc.id,
             name: doc.data().restaurantName,
-            restaurantPhone: doc.data().restaurantPhone
+            restaurantPhone: doc.data().restaurantPhone,
+            description:doc.data().description
           };
           this.restusers.push(data);
         });

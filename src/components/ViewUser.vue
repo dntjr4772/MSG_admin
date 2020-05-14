@@ -9,7 +9,7 @@
       </li>
     </ul>
     <router-link to="/home" class="btn grey">Back</router-link>
-    <button @click="deleteuser(userDelete)" class="btn red">사용자 영구 정지</button>
+    <button @click="deleteuser(userSanction)" class="btn red">사용자 영구 정지</button>
     <button @click="testuser" class="btn blue">테스트 신고 추가</button>
   </div>
 </template>
@@ -98,18 +98,22 @@ export default {
       }
       //예약목록에서도 모조리 제거
     },
-    userDelete(user_id){
+    userSanction(user_id){
       db
           .collection('users')
-          .where('user_id', '==', this.$route.params.user_id)
-          .get()
-          .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-              doc.ref.delete();
-              console.log('delete '+user_id);
-              this.$router.push('/home');
-            });
+          .doc(this.$route.params.user_id).update({
+            
+            "sanction":true
+            
+          })
+          .then(() => {
+            console.log("User is suspended");
+            this.$router.push('/home');
+          })
+          .catch((error) => {
+            console.error("Error updating document: ", error);
           });
+      
     },
     deleteItem(id){
         db

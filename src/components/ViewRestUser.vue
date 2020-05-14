@@ -9,6 +9,7 @@
         <div class="card-content">
           <div>식당 이름 : {{restaurantName}}</div>
           <div>식당 번호 : {{restaurantPhone}}</div>
+          <div>식당 설명 : {{description}}</div>
         </div>
         <div class="card-action">
           <router-link to="/" class="btn grey">Back</router-link>
@@ -27,8 +28,9 @@ export default {
     return {
       restaurantName: "",
       restaurantPhone: 0,
-      apply:false,
-      profileImageUrl:""
+      approved:false,
+      profileImageUrl:"",
+      description:""
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -43,8 +45,8 @@ export default {
                 vm.profileImageUrl = doc.data().profileImageUrl;
                 vm.restaurantName = doc.data().restaurantName;
                 vm.restaurantPhone = doc.data().restaurantPhone;
-                vm.apply = doc.data().apply;
-
+                vm.approved = doc.data().approved;
+                vm.description=doc.data().description;
           });
         });
       });
@@ -55,7 +57,7 @@ export default {
           db
             .collection('restaurantUsers')
             .doc(this.$route.params.restuser_id).update({
-                "apply":true
+                "approved":true
             })
             .then(() => {
                 console.log("successfuly restaurant user approval");
