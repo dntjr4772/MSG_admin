@@ -100,7 +100,7 @@ export default {
     },
     userSanction(user_id){
       db
-          .collection('users')
+          .collection('User')
           .doc(this.$route.params.user_id).update({
             
             "sanction":true
@@ -127,7 +127,7 @@ export default {
            //ban_count 1 줄이기
             this.ban_count-=1;
         db
-          .collection('users')
+          .collection('User')
           .doc(this.$route.params.user_id).update({
             
             "ban_count":this.ban_count
@@ -135,9 +135,6 @@ export default {
           })
           .then(() => {
             console.log("Subtract a number User's ban_count");
-            //page reload
-            //window.location.reload();
-            //this.$router.go(this.$router.currentRoute);
             this.$router.push('/home');
           })
           .catch((error) => {

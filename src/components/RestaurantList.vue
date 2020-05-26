@@ -21,16 +21,16 @@ export default {
   },
   created() {
     db
-      .collection('restaurantUsers')
+      .collection('Restaurant')
       .where('approved', '==', false)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           const data = {
             id: doc.id,
-            name: doc.data().restaurantName,
-            restaurantPhone: doc.data().restaurantPhone,
-            description:doc.data().description
+            name: doc.data().res_name,
+            restaurantPhone: doc.data().res_phone,
+            description:doc.data().res_description
           };
           this.restusers.push(data);
         });
