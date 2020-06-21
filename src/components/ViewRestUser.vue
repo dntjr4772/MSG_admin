@@ -1,7 +1,7 @@
 <template>
 <div class="row">
     <div class="col s12 m7">
-      <div class="card">
+      <div class="card" id="card">
         <div class="card-image">
           <img :src=profileImageUrl alt="식당 사진">
           
@@ -80,3 +80,7 @@ export default {
   }
 }
 </script>
+
+<style> 
+#card { text-align: center; }
+</style>

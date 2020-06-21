@@ -21,15 +21,15 @@ export default {
   },
   created() {
     db
-      .collection('users')
-      .where('ban_count', '>=', 10)
+      .collection('User')
+      .where('ban_count', '>=', 1)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           const data = {
             id: doc.id,
             user_id: doc.data().user_id,
-            name: doc.data().userName,
+            name: doc.data().user_name,
             ban_count:doc.data().ban_count
           };
           this.users.push(data);
