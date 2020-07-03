@@ -1,0 +1,2 @@
+파이어베이스 Function에서 노드 모듈 설치 후 Firebase 설치
+functions의 index.js에 코드 작성후 firebase deploy --only functions을 통해 firebase server에 배포
